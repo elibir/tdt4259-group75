@@ -42,36 +42,46 @@ if __name__ == "__main__":
         target = "consumption"
 
         size = len(df_city.index)
-        train_size = 500
+        train_size = 300
+        validation_size = 6*24
         test_size = 6*24
 
-        train_df = df_city[size-train_size-test_size:size-test_size]
+        train_df = df_city[size-train_size-test_size -
+                           validation_size:size-test_size-validation_size]
+        validation_df = df_city[size-test_size-validation_size:size-test_size]
         test_df = df_city[size-test_size:]
 
         X_train, y_train = train_df[features], train_df[target]
+        X_validation, y_validation = validation_df[features], validation_df[target]
         X_test, y_test = test_df[features], test_df[target]
 
-        model = xgboost.XGBRegressor(base_score=0.5, booster='gbtree',
+        model = xgboost.XGBRegressor(base_score=0.5, booster="gbtree",
                                      n_estimators=1000,
                                      early_stopping_rounds=50,
-                                     objective='reg:squarederror',
+                                     objective="reg:squarederror",
                                      max_depth=3,
                                      learning_rate=0.01)
 
         model.fit(X_train, y_train,
-                  eval_set=[(X_train, y_train)],
+                  eval_set=[(X_train, y_train), (X_validation, y_validation)],
                   verbose=100)
 
         train_preds = pd.DataFrame(
             index=X_train.index, data=model.predict(X_train))
+        validation_preds = pd.DataFrame(
+            index=X_validation.index, data=model.predict(X_validation))
         test_preds = pd.DataFrame(
-            index=X_test.index, data=model.predict(X_test))
+            index=X_test.index, data=model.predict(X_test)
+        )
 
         ax = y_train.plot()
+        y_validation.plot(ax=ax)
         y_test.plot(ax=ax)
         train_preds.plot(ax=ax)
+        validation_preds.plot(ax=ax)
         test_preds.plot(ax=ax)
 
-        ax.legend(["y_train", "y_test", "preds_train", "preds_test"])
+        ax.legend(["y_train", "y_validation", "y_test", "preds_train",
+                  "preds_validation", "preds_test"])
         plt.savefig(out_dir / f"{city}_forecast.png")
         plt.clf()
