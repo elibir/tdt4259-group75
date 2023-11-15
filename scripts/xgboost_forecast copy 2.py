@@ -76,15 +76,15 @@ if __name__ == "__main__":
 
         ax = y_train.plot()
         y_validation.plot(ax=ax)
-        y_test[-21:].plot(ax=ax)
+        y_test[-22:].plot(ax=ax)
         train_preds.plot(ax=ax)
         validation_preds.plot(ax=ax)
-        test_preds[-21:].plot(ax=ax)    
+        test_preds[-22:].plot(ax=ax)    
        
-        ax.axvline(y_test.index[-21], color="black", ls="--")
-        ax.axvline(y_test.index[-21-24], color="grey", ls="--")
-        y_test[:-21].plot(ax=ax, alpha=0.2, color='green')
-        test_preds[:-21].plot(ax=ax, alpha=0.2, color='brown')
+        ax.axvline(y_test.index[-22], color="black", ls="--")
+        ax.axvline(y_test.index[-22-24], color="grey", ls="--")
+        y_test[:-22].plot(ax=ax, alpha=0.2, color='green')
+        test_preds[:-22].plot(ax=ax, alpha=0.2, color='brown')
 
         ax.legend(["y_train", "y_validation", "y_test", "preds_train",
                   "preds_validation", "preds_test", 'prediction date', 'present'])
