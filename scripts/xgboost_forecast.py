@@ -34,7 +34,7 @@ def train_and_plot_with_most_recent_data(
         lr,
         train_size,
         validation_size=6*24,
-        test_size=6*24):
+        test_size=6*24-2): #Subtract two hours to ensure test and validation sets start at midnight
 
     df_city = featurize(df_city)
 
@@ -78,9 +78,11 @@ def train_and_plot_with_most_recent_data(
     train_preds.plot(ax=ax)
     validation_preds.plot(ax=ax)
     test_preds.plot(ax=ax)
+    ax.axvline(y_validation.index[0], color="grey", ls="--")
+    ax.axvline(y_test.index[0], color="black", ls="--")
 
     ax.legend(["y_train", "y_validation", "y_test", "preds_train",
-               "preds_validation", "preds_test"])
+               "preds_validation", "preds_test", "start of validation set", "start of test set"])
     plt.title(f"Energy consumption forecast for {city}")
     plt.savefig(out_dir / f"{city}_forecast.png")
     plt.clf()
