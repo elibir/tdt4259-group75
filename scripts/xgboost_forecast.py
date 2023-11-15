@@ -230,13 +230,13 @@ if __name__ == "__main__":
 
         print(f"Forecasting consumption for {city}")
 
-        print("Finding best hyperparams through sliding window cross validation...")
+        print("Finding the best hyperparams through sliding window cross validation...")
 
         best_params = sliding_window_evaluate(
             df.loc[city],
-            max_depths=[3, 5, 7],
-            lrs=[0.1, 0.01, 0.001],
-            train_sizes=[100, 300, 500, 700]
+            max_depths=[3],  # [3, 5, 7],
+            lrs=[0.1],  # [0.1, 0.01, 0.001],
+            train_sizes=[500, 700, 900]
         )
 
         print("Best params:")
