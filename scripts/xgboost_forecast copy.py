@@ -45,7 +45,7 @@ if __name__ == "__main__":
         size = len(df_city.index)
         train_size = 300
         validation_size = 6*24
-        test_size = 1*21
+        test_size = 1*22
 
         train_df = df_city[size-train_size-test_size - (24*5) -
                            validation_size:size-test_size - (24*5) -validation_size]
