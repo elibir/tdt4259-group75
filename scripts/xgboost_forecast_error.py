@@ -18,6 +18,8 @@ matplotlib.rcParams['ytick.labelsize'] = 12
 matplotlib.rcParams['text.color'] = 'k'
 matplotlib.rcParams['figure.figsize'] = (20, 10)
 
+error_dir = Path("error")
+error_dir.mkdir(exist_ok=True)
 
 def featurize(df: pd.DataFrame):
     df["dayofweek"] = df.index.dayofweek
