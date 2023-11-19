@@ -97,7 +97,7 @@ def train_and_plot_with_most_recent_data(
     # Change font size for the numbers on the y-axis (major and minor ticks)
     ax.tick_params(axis='y', which='major', labelsize=14)
     ax.tick_params(axis='y', which='minor', labelsize=14) 
-    plt.savefig(out_dir / f"{city}_forecast.png", bbox_inches='tight')
+    plt.savefig(out_dir / f"{city}_forecast2.png", bbox_inches='tight')
     plt.clf()
     
 
