@@ -82,9 +82,17 @@ def train_and_plot_with_most_recent_data(
     ax.axvline(y_test.index[0], color="black", ls="--")
 
     ax.legend(["y_train", "y_validation", "y_test", "preds_train",
-               "preds_validation", "preds_test", "start of validation set", "start of test set"])
-    plt.title(f"Energy consumption forecast for {city}")
-    plt.savefig(out_dir / f"{city}_forecast.png")
+               "preds_validation", "preds_test", "start of validation set", "start of test set"], fontsize=12)
+    plt.title(f"Energy consumption forecast for {city}", fontsize=14)
+    ax.set_xlabel("Time", fontsize=14) 
+    ax.set_ylabel("Consumption (MW)", fontsize=14)
+    ax.tick_params(axis='x', which='major', labelsize=14)
+    ax.tick_params(axis='x', which='minor', labelsize=14)
+
+    # Change font size for the numbers on the y-axis (major and minor ticks)
+    ax.tick_params(axis='y', which='major', labelsize=14)
+    ax.tick_params(axis='y', which='minor', labelsize=14) 
+    plt.savefig(out_dir / f"{city}_forecast.png", bbox_inches='tight')
     plt.clf()
 
     metrics = {
