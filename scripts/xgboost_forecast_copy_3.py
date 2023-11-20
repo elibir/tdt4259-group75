@@ -73,6 +73,18 @@ def train_and_plot_with_most_recent_data(
         index=X_test.index, data=model.predict(X_test)
     )
 
+    
+    
+    export_dir = Path("results3")
+    export_dir.mkdir(exist_ok=True)
+    
+    export_df = y_validation
+    export_csv_path = export_dir / f"validation_{city}.csv"  # Define the error CSV path
+    export_df.reset_index().to_csv(export_csv_path, index=False)  # Save the error to a CSV file
+
+    export_df = y_test
+    export_csv_path = export_dir / f"test_{city}.csv"  # Define the error CSV path
+    export_df.reset_index().to_csv(export_csv_path, index=False)  # Save the error to a CSV file
     #plotting the figure
     
     plt.figure(figsize=(10, 5))

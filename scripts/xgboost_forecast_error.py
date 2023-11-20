@@ -272,7 +272,7 @@ if __name__ == "__main__":
         errors[city] = error  # Store the error for plotting
 
         print("Final metrics:")
-        pprint(metrics)
+        print(metrics)
 
         # Save metrics to JSON file
         #metrics_json_path = out_dir / f"metrics_{city}.json"

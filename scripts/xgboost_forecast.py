@@ -7,6 +7,9 @@ from tqdm import tqdm
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
 from pathlib import Path
 from pprint import pprint
+from xgboost import plot_importance
+import seaborn as sns
+import numpy as np
 
 pd.options.mode.chained_assignment = None
 
@@ -113,6 +116,19 @@ def train_and_plot_with_most_recent_data(
         }
     }
 
+    # Plot the feature correlation matrix
+    plot_feature_correlation(df_city, ["temperature", "dayofweek", "dayofyear", "month", "hour", "year"], out_dir, city)
+
+    # Plot Feature Importance
+    plt.figure(figsize=(8, 2))
+    plt.rcParams.update({'font.size': 14})
+    plt.xlabel('F Score', fontsize=20)
+    plt.tick_params(axis='both', which='major', labelsize=14)
+    plot_importance(model, height=0.5)
+    plt.savefig(out_dir / f"{city}_feature_importance.png", bbox_inches='tight')
+    plt.clf()
+    
+    
     return metrics
 
 
@@ -222,6 +238,27 @@ def sliding_window_evaluate(
 
     return top_params
 
+def plot_feature_correlation(df, features, out_dir, city):
+    # Calculate the correlation matrix
+    corr_matrix = df[features].corr()
+
+    # Set up the matplotlib figure
+    plt.figure(figsize=(10, 8))
+    
+    # Set the font size for labels and ticks
+    plt.rcParams.update({'font.size': 14})
+
+    # Draw the heatmap with the mask and correct aspect ratio
+    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='coolwarm', square=True, cbar_kws={"shrink": .5})
+
+    # Set the labels and title
+    plt.title(f'Feature Correlation Matrix for {city}', fontsize=18)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+
+    # Save the figure
+    plt.savefig(out_dir / f"{city}_feature_correlation_matrix.png", bbox_inches='tight')
+    plt.close()
 
 if __name__ == "__main__":
 
@@ -230,7 +267,7 @@ if __name__ == "__main__":
     out_dir = Path("results")
     out_dir.mkdir(exist_ok=True)
 
-    df = pd.read_csv(Path("data") / "consumption_temp.csv")
+    df = pd.read_csv("../data/consumption_temp.csv")
     df["time"] = pd.to_datetime(df["time"])
     df = df.set_index(["location", "time"]).sort_index()
 
